@@ -1,0 +1,151 @@
+
+
+public interface Radio {
+    void ligar();
+    void desligar();
+    void aumentarVolume();
+    void diminuirVolume();
+    void trocarEstacao(double estacao);
+    void trocarBanda();
+    void reproduzir();
+    void pausar();
+}
+
+public class RadioPortatil implements Radio {
+    private int volume;
+    private boolean estado;
+    private double estacao;
+    private String banda;
+
+    // Construtor vazio
+    public RadioPortatil() {
+        this.volume = 0;
+        this.estado = false;
+        this.estacao = 87.0;
+        this.banda = "FM";
+    }
+
+    // Construtor com todos os atributos
+    public RadioPortatil(int volume, boolean estado, double estacao, String banda) {
+        this.volume = volume;
+        this.estado = estado;
+        this.estacao = estacao;
+        this.banda = banda;
+    }
+
+    // Getters e Setters
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public double getEstacao() {
+        return estacao;
+    }
+
+    public void setEstacao(double estacao) {
+        this.estacao = estacao;
+    }
+
+    public String getBanda() {
+        return banda;
+    }
+
+    public void setBanda(String banda) {
+        this.banda = banda;
+    }
+
+    // Implementação dos métodos da interface
+    @Override
+    public void ligar() {
+        this.estado = true;
+    }
+
+    @Override
+    public void desligar() {
+        this.estado = false;
+    }
+
+    @Override
+    public void aumentarVolume() {
+        if (this.estado && this.volume < 50) {
+            this.volume += 5;
+        }
+    }
+
+    @Override
+    public void diminuirVolume() {
+        if (this.estado && this.volume > 0) {
+            this.volume -= 5;
+        }
+    }
+
+    @Override
+    public void trocarEstacao(double estacao) {
+        if (this.estado) {
+            if (this.banda.equals("FM") && estacao >= 87 && estacao <= 108) {
+                this.estacao = estacao;
+            } else if (this.banda.equals("AM") && estacao >= 520 && estacao <= 1710) {
+                this.estacao = estacao;
+            }
+        }
+    }
+
+    @Override
+    public void trocarBanda() {
+        if (this.estado) {
+            if (this.banda.equals("FM")) {
+                this.banda = "AM";
+                if (this.estacao < 520 || this.estacao > 1710) {
+                    this.estacao = 520;
+                }
+            } else {
+                this.banda = "FM";
+                if (this.estacao < 87 || this.estacao > 108) {
+                    this.estacao = 87;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void reproduzir() {
+        if (this.estado) {
+            System.out.println("Reproduzindo...");
+        }
+    }
+
+    @Override
+    public void pausar() {
+        if (this.estado) {
+            System.out.println("Pausado.");
+        }
+    }
+
+    // Teste das funcionalidades
+    public static void main(String[] args) {
+        RadioPortatil meuRadio = new RadioPortatil();
+        meuRadio.ligar();
+        meuRadio.aumentarVolume();
+        System.out.println("Volume atual: " + meuRadio.getVolume());
+        meuRadio.diminuirVolume();
+        System.out.println("Volume após diminuir: " + meuRadio.getVolume());
+        meuRadio.trocarBanda();
+        System.out.println("Banda atual: " + meuRadio.getBanda());
+        meuRadio.trocarEstacao(1000);
+        System.out.println("Estação atual: " + meuRadio.getEstacao());
+        meuRadio.reproduzir();
+        meuRadio.pausar();
+    }
+}
